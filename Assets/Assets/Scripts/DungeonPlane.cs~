@@ -9,7 +9,6 @@ public class DungeonPlane : MonoBehaviour {
   public Vector3 offset = new Vector3(0, 0, 0);
   public int xRes = 1;
   public int yRes = 1;
-  public Dungeon dungeon;
 	// Use this for initialization
 	void Start () {
 	}
@@ -18,11 +17,19 @@ public class DungeonPlane : MonoBehaviour {
 	void Update () {
 	}
 
+  public void Init() {
+    Vector3 scale = Vector3.one;
+    scale.x = width * 1.6f/16;
+    scale.z = height * 0.9f/9;
+    this.gameObject.transform.localScale = scale;
+    this.gameObject.transform.localPosition = new Vector3(width/2, 0, height/2);
+  }
+
   public void BuildTexture(Dungeon d) {
     Texture2D texture = new Texture2D(width * xRes, height * yRes);
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-        texture.SetPixel(x , y , d.getTile(x, y).color);
+        texture.SetPixel(width - x - 1, height - 1 - y, d.GetTile(x, y).color);
       }
     }
     texture.Apply();

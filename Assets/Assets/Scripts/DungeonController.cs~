@@ -1,54 +1,55 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DungeonController : MonoBehaviour {
   public DungeonPlane plane;
   public Dungeon dungeon;
-  public Camera cam;
   public Character player;
+  public float move_rate = 0.01f;
 
   private Vector3 offset;
+  private float lastTime;
+  private Dictionary <KeyCode, Vector2> keys = 
+    new Dictionary <KeyCode, Vector2>()
+     {{KeyCode.UpArrow,    new Vector2(0,+1)},
+      {KeyCode.DownArrow,  new Vector2(0,-1)},
+      {KeyCode.RightArrow, new Vector2(+1,0)},
+      {KeyCode.LeftArrow,  new Vector2(-1,0)}};
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
     offset = new Vector3(0,3,0);
+    lastTime = Time.time;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-    MovePlayer(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
-    cam.transform.localPosition = offset;
+	void Update() {
+    foreach (KeyCode k in keys.Keys) {
+      if (Input.GetKeyDown(k) || 
+          (Input.GetKey(k) && Time.time - lastTime > move_rate)) {
+        MovePlayer(keys[k]);
+        lastTime = Time.time;
+      }
+    }
+
     if (Input.GetKeyDown("space")) {
       GenerateDungeon();
     }
 	}
 
-  void MovePlayer(Vector3 dir) {
-    player.Move(dir);
-    offset += dir;
+  void MovePlayer(Vector2 dir) {
+    if (dungeon.CanMove(player.pos + dir)) {
+      player.Move(dir);
+      offset += new Vector3(dir.x, 0, dir.y);
+    }
   }
 
   public void GenerateDungeon() {
-    offset = new Vector3(0,3,0);
-    Vector3 scale = Vector3.one;
-    scale.x = plane.width * 1.6f/16;
-    scale.z = plane.height * 0.9f/9;
-    plane.transform.localScale = scale;
-    player.MoveTo(Vector3.zero);
-    player.Move(new Vector3(0, 1, 0));
-    if (plane.width % 2 == 1) {
-      offset += new Vector3(0.5f, 0, 0);
-    }
-    else {
-      player.Move(new Vector3(-0.5f, 0, 0));
-    }
-    if (plane.height % 2 == 0) {
-      offset += new Vector3(0, 0, 0.5f);
-      player.Move(new Vector3(0, 0, 0.5f));
-    }
-    cam.transform.localPosition = offset;
-
+    plane.Init();
     dungeon = new Dungeon(plane.width, plane.height);
+    player.MoveTo(dungeon.GetCenter());
+    player.UpdateTransforms();
     plane.BuildTexture(dungeon);
   }
 }

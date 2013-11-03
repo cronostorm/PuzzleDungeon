@@ -1,18 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Tile {
-  float val {set; get;}
+  public enum TileType {Wall, Floor, Water, Lava};
+  Dictionary<TileType, Color> _TileColors = 
+    new Dictionary<TileType, Color> 
+    {{TileType.Wall,  Color.black},
+     {TileType.Floor, Color.grey},
+     {TileType.Water, Color.blue},
+     {TileType.Lava,  Color.red}};
+
+
+  TileType _type;
+  public TileType type {get {return _type;}}
+  public Dictionary<TileType, Color> TileColors {get {return _TileColors;}}
   public Color color {set; get;}
 
+  public static Tile Wall   = new Tile(TileType.Wall);
+  public static Tile Floor  = new Tile(TileType.Floor);
+  public static Tile Water  = new Tile(TileType.Water);
+  public static Tile Lava   = new Tile(TileType.Lava);
+
   public Tile() {
-    val = 0.0f;
-    color = Color.blue;
+    _type = TileType.Wall;
+    color = _TileColors[type];
   }
   
-  public Tile(float v, Color c) {
-    val = v;
-    color = c;
+  public Tile(TileType t) {
+    _type = t;
+    color = _TileColors[type];
   }
 
+  public override bool Equals(System.Object obj) {
+    Tile tile = obj as Tile;
+    if (tile == null) return false;
+    else return tile.type == this.type;
+  }
+
+  public override int GetHashCode() {
+    return (int) this.type;
+  }
 }
