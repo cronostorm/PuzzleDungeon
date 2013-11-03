@@ -1,0 +1,9 @@
+﻿using UnityEditor;
+using UnityEngine;
+using System.Collections;
+
+public class DungeonPlaneEditor : Editor {
+  public override void OnInspectorGUI() {
+    
+  }
+}
