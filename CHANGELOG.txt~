@@ -1,0 +1,48 @@
+Puzzle Dungeon
+
+Goal		- 
+2D dungeon crawling game with puzzle component. 
+Game is split into two halves: the 'dungeon' half, and the 'puzzle' half.
+Game flow is turn based, the player will take one turn in the puzzle half of 
+the board, and then another in the dungeon half. Then, the AI characters will
+be given a turn. This repeats until the level is finished or the character dies.
+
+The dungeon half of the game will involve a character crawling through a randomly
+generated dungeon with monsters, loot, and different kinds of terrain. 
+The player has numerous stats that are used to crawl the dungeon: 
+	Health		- The amount of health the character currently has
+	Gold			- The amount of gold the character has
+	Movement	- Number of moves the character can take this turn
+	Attack		- Number of times the character can attack this turn
+	Defense		- Number of damage the character can block this turn
+	Magic			- Number of spells the character can cast this turn
+Health and Gold are preserved from turn to turn, but the other stats are not.
+
+The puzzle half of the game is involves a swapping game where the goal is to 
+match 3 or more of the same shape. Matching a shape grants a corresponding
+stat for use in the dungeon portion of the game.
+
+Game flow example: 
+- Player starts with some base stats:
+	5 health, 0 gold, 1 move, 0 attack, 0 defense, 0 magic
+Puzzle Turn 1		: Player matches 3 movement icons, granting 1 move.
+Dungeon Turn 1	: Player has 2 moves, and moves left twice. 
+AI Turn 1				: Enemy Bat moves right and attacks Player. 
+									Player now has 4 health.
+Puzzle Turn 2		: Player matches 3 health icons and 4 attack icons, 
+									granting one health and 2 attack.
+									Player now has 5 health.
+Dungeon Turn 1	: Player attacks and kills bat, player is granted 1 gold.
+									All enemies are dead, the dungeon is cleared.
+
+Week 1	- 
+I: Wrote a dungeon generator that generates random tiles, textures a 2d plane
+	 with the corresponding colors. 
+B: Wrote a random puzzle generator made of cubes. Can check if 3 in a row are
+	 matched
+
+Week 2 - 
+I: Added discrete player controls, added specific tile types, checks for 
+	 colliisions with walls.
+B: Added variable handles (Board size, number of colors, kind of colors)
+	 Falling and swapping implemented.
