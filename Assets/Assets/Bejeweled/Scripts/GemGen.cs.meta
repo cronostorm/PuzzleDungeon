@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 846dfe86a9185854da9f550721eebfad
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - GemCube: {fileID: 100000, guid: 16d7a2c0cefe8d7448e4ef29b58c72a5, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
