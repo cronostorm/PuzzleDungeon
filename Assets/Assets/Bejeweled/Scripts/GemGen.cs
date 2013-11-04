@@ -191,7 +191,7 @@ public class GemGen : MonoBehaviour {
 				// Else move up.
 			}
 			if (bottomGemIndex <= gameSize - 1) {
-				Debug.Log ("C " + c + " Bot " + bottomGemIndex);
+				// Debug.Log ("C " + c + " Bot " + bottomGemIndex);
 				fillInGems(c, bottomGemIndex);
 				// Fill in from curr to bot
 			}
