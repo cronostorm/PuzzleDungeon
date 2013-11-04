@@ -46,3 +46,6 @@ I: Added discrete player controls, added specific tile types, checks for
 	 colliisions with walls.
 B: Added variable handles (Board size, number of colors, kind of colors)
 	 Falling and swapping implemented.
+	There is currently a bug where the board randomly resets after update.
+	However when update is only called once, the board gets cleared and then blocks fall down, which indicates that
+	mechanic works.

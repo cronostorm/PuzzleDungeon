@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GemGen : MonoBehaviour {
 	
-	public GameObject GemCube;
+    public GameObject GemCube;
 	/*
 	 * Squares are 1 unit wide on a gameSize (10 standard) unit square. 
 	 * Board goes from -gamesize/ 2 to + gamesize/ 2. 
@@ -14,19 +14,21 @@ public class GemGen : MonoBehaviour {
  	 * Index is x + z * gameSize --> where z increases downwards column 
 	 * and x increases accross row. 
 	 */ 
-  public Vector3 origin = new Vector3(0,0,100);
-	public int gameSize = 10;
+    public Vector3 origin = new Vector3(0,0,100); // To adjust for camera viewing
+	public int gameSize = 10; // Size of board
 	// Colors of gems
 	public Color[] gemColors = {Color.red, Color.green, Color.blue, 
 		Color.yellow, Color.magenta};
 	// Array of gems generated.
 	public GameObject[] gemBoard = new GameObject[100];
-	int numUpdate = 0;
-  private float t;
+	// int numUpdate = 0;
+ 	private float t;  // For time
 	
 	// Initalization
+    // Should generate gameSize ^ 2 gems. 
 	void Start () {
-    t = Time.time;
+        t = Time.time;
+        Debug.Log("Calling start");
 		for (int col = 0; col < gameSize; col++) {
 			for (int row = 0; row < gameSize; row++) {
 				generateRandomGem (col, row);
@@ -39,15 +41,17 @@ public class GemGen : MonoBehaviour {
 		postMove();
 	}
 	
+    // Function to be called post move to update the board.
 	void postMove() {
-		if (Time.time - t > 2.0f) {
+		
+        if (Time.time - t > 2.0f) {
 			for (int col = 0; col < gameSize; col++) {
 				checkForMatches(col, true);  // in row
 				checkForMatches(col, false); // in column
 			}
 			shiftBoardDown();
-			numUpdate++;
-      t = Time.time;
+			// numUpdate++;
+            t = Time.time;
 		}
 		
 	}
@@ -60,7 +64,8 @@ public class GemGen : MonoBehaviour {
 		// Start to clear from
 		Color prevColor = Color.white; 
 		int start_clear = -1;
-		int clearCount = 1; // How many gems in a array with matching color.
+		int clearCount = 1;  // How many gems in a array with matching color.
+        
 		// Check through array
 		// If we want to disable a gem, we simply disable the renderer. 
 		for (int c = 0; c < gameSize; c++) {
@@ -73,15 +78,18 @@ public class GemGen : MonoBehaviour {
 			}
 			
 			Color currColor = gem.renderer.material.color;
-			
+		
+            // White is default non-used color for gems. 
 			if (prevColor == Color.white) {
 				prevColor = currColor;
 				start_clear = c;
+                
 			} else if (prevColor == currColor) {
+                // If prevColor already seen, it might be a row.
 				clearCount++;
 			} else {
 				prevColor = currColor;
-				// Check if we need to clear
+				// Check if we need to clear. Only clear if 3+ colored gems in a row.
 				if (clearCount >= 3) {
 					for (int i = start_clear; i < start_clear + clearCount; i++) {
 						if (row) {
@@ -91,12 +99,13 @@ public class GemGen : MonoBehaviour {
 						}
 					}
 				}
-				
+				// Reset counts. 
 				clearCount = 1;
 				start_clear = c;
 			}
 		}
-		
+        
+		// Check if we need to clear. Only clear if 3+ colored gems in a row.
 		if (clearCount >= 3) {
 			for (int i = start_clear; i < start_clear + clearCount; i++) {
 				if (row) {
@@ -111,6 +120,7 @@ public class GemGen : MonoBehaviour {
 	
 	}
 	
+    // Generates a randomly colored gem given a position on the board.
 	bool generateRandomGem(int x, int z) {
 		// Debug.Log ("Making new gem at " + x + " " + z);
 		GameObject gem = Instantiate(GemCube, 
@@ -124,20 +134,18 @@ public class GemGen : MonoBehaviour {
 				gemBoard[x + z * gameSize] = gem;
 		return true;
 	}
-	
+
+    // Returns true if gem is hidden
 	bool gemIsHidden(GameObject gem) {
 		return !gem.renderer.enabled;
 	}
-			
-	bool hideAtIndex(int index) {
-		GameObject gem = gemBoard[index];
-		if (gem == null) {
-			return false;
-		}
-		gem.renderer.enabled = false;
-		return true;
-	}
 	
+    /*
+     * Swaps the position of two gems. 
+     * This is done by setting gem1 position to gem2 and vice versa.
+     * Then swapping those two gems on the board so the position is reflected
+     * in the board as well as physically.
+     */
 	void swapGemPosition(int idx1, int idx2) {
 		GameObject temp1 = gemBoard[idx1];
 		GameObject temp2 = gemBoard[idx2];
@@ -150,7 +158,7 @@ public class GemGen : MonoBehaviour {
 	
 	/*
 	 * Fills in gems for a given column starting from rowStart
-	 * and going up until gameSize.
+	 * and going up until gameSize. Destroys old gems in those spots.
 	 */
 	void fillInGems(int column, int rowStart){
 		for(int i = rowStart; i < gameSize; i++) { 
@@ -164,23 +172,28 @@ public class GemGen : MonoBehaviour {
 		for (int c = 0; c < gameSize; c++) {
 			int bottomGemIndex = 0;
 			int currGemIndex = 1;
+            
 			for (int r = 0; r < gameSize; r++) {
 				GameObject gem = gemBoard[c + r * gameSize];
 				// If gem is hidden, find next visible gem to move down.
 				if (gemIsHidden(gem)) {
-					// Debug.Log ("Gem hidden at (" + c + " " + r + ")");
+                    // While I can still find gems to shift down.
 					while (currGemIndex <= gameSize - 1) {
 						GameObject findGem = 
 							gemBoard[c + currGemIndex * gameSize];
+                        // If already hidden, check gem above that.
 						if (gemIsHidden(findGem)) {
 							currGemIndex++;	
 						} else {
+                            // Else, swap gem positions.
 							swapGemPosition(c + bottomGemIndex * gameSize, 
 								c + currGemIndex * gameSize);
 							bottomGemIndex++;
 							break;
 						}
 					}
+                    // No more gems to check in column. They've all been
+                    // shifted down.
 					if (currGemIndex == gameSize - 1){
 						break;
 					}
@@ -191,7 +204,7 @@ public class GemGen : MonoBehaviour {
 				// Else move up.
 			}
 			if (bottomGemIndex <= gameSize - 1) {
-				Debug.Log ("C " + c + " Bot " + bottomGemIndex);
+                // TODO(brooklyn) Bug is likely here that's causing board to reset.
 				fillInGems(c, bottomGemIndex);
 				// Fill in from curr to bot
 			}
