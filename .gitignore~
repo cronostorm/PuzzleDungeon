@@ -9,3 +9,4 @@ Temp
 *.user
 *.unityproj
 *.DS_Store
+*.pidb

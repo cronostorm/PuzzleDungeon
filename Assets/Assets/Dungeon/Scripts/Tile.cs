@@ -2,7 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * Basic Tile class for the dungeon
+ * Each grid is a representation of a tile class
+ */
 public class Tile {
+
+#region Public Variables
+
   public enum TileType {Wall, Floor, Water, Lava};
   Dictionary<TileType, Color> _TileColors = 
     new Dictionary<TileType, Color> 
@@ -11,8 +18,6 @@ public class Tile {
      {TileType.Water, Color.blue},
      {TileType.Lava,  Color.red}};
 
-
-  TileType _type;
   public TileType type {get {return _type;}}
   public Dictionary<TileType, Color> TileColors {get {return _TileColors;}}
   public Color color {set; get;}
@@ -21,6 +26,14 @@ public class Tile {
   public static Tile Floor  = new Tile(TileType.Floor);
   public static Tile Water  = new Tile(TileType.Water);
   public static Tile Lava   = new Tile(TileType.Lava);
+
+#endregion
+#region Private Variables
+
+  private TileType _type;
+
+#endregion
+#region Constructors
 
   public Tile() {
     _type = TileType.Wall;
@@ -32,6 +45,9 @@ public class Tile {
     color = _TileColors[type];
   }
 
+#endregion
+#region Override Methods
+
   public override bool Equals(System.Object obj) {
     Tile tile = obj as Tile;
     if (tile == null) return false;
@@ -41,4 +57,5 @@ public class Tile {
   public override int GetHashCode() {
     return (int) this.type;
   }
+#endregion
 }

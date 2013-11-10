@@ -1,21 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Script that textures a plane to look like a dungeon
+ */
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class DungeonPlane : MonoBehaviour {
+#region Public Variables
+
   public int width = 0;
   public int height = 0;
   public Vector3 offset = new Vector3(0, 0, 0);
   public int xRes = 1;
   public int yRes = 1;
-	// Use this for initialization
+
+#endregion 
+#region Private Variables
+
+#endregion
+#region Unity Methods
+
 	void Start() {
 	}
 	
-	// Update is called once per frame
 	void Update() {
 	}
+
+#endregion 
+#region Public Methods
 
   public void Init() {
     Vector3 scale = Vector3.one;
@@ -38,4 +51,6 @@ public class DungeonPlane : MonoBehaviour {
     MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
     mesh_renderer.sharedMaterial.mainTexture = texture;
   }
+
+#endregion
 }

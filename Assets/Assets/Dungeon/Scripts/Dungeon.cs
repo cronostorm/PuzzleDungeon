@@ -3,16 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Dungeon {
+#region Public Variables
+
   public Tile[] map;
+
+#endregion
+#region Private Variables
+
   private int _width;
   private int _height;
-  int width {get {return _width;}}
-  int height {get {return _height;}}
-
   private List<Tile> tiles = 
     new List<Tile>() {Tile.Wall, Tile.Floor, Tile.Water, Tile.Lava};
   
-	// Use this for initialization
+#endregion
+#region Constructors
+
 	public Dungeon() {
 	  map = new Tile[_width * _height];
     for (int i = 0; i < _width * _height; i++) {
@@ -20,7 +25,6 @@ public class Dungeon {
     }
 	}
 	
-	// Update is called once per frame
 	public Dungeon (int i, int j) {
 	  _width = i;
     _height = j;
@@ -31,21 +35,18 @@ public class Dungeon {
     }
 	}
 
+#endregion
+#region Accessor Methods
+
+  public int width {get {return _width;}}
+  public int height {get {return _height;}}
+
   public Tile GetTile (int i, int j) {
     return map[i + j * _width];
   }
 
   public Tile GetTile (Vector2 idx) {
     return GetTile((int) idx.x, (int) idx.y);
-  }
-
-  public bool CanMove (Vector2 idx) {
-    int i = (int) idx.x;
-    int j = (int) idx.y;
-    if (i < 0 || i >= _width || j < 0 || j >= _height) {
-      return false;
-    }
-    return !(map[i + j * _width] == Tile.Wall);
   }
 
   public Vector2 GetIdx (Vector3 pos) {
@@ -59,4 +60,18 @@ public class Dungeon {
   public Vector3 GetTilePos(Vector2 idx) {
     return new Vector3(idx.x, 0, idx.y);
   }
+
+#endregion
+#region Public Methods
+
+  public bool CanMove (Vector2 idx) {
+    int i = (int) idx.x;
+    int j = (int) idx.y;
+    if (i < 0 || i >= _width || j < 0 || j >= _height) {
+      return false;
+    }
+    return !(map[i + j * _width] == Tile.Wall);
+  }
+
+#endregion
 }

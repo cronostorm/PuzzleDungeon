@@ -2,11 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * Class that controlls dungeon behavior
+ */
 public class DungeonController : MonoBehaviour {
+#region Public Variables
+  
   public DungeonPlane plane;
   public Dungeon dungeon;
   public Character player;
   public float move_rate = 0.01f;
+
+#endregion
+#region Private Variables
 
   private Vector3 offset;
   private float lastTime;
@@ -17,13 +25,15 @@ public class DungeonController : MonoBehaviour {
       {KeyCode.RightArrow, new Vector2(+1,0)},
       {KeyCode.LeftArrow,  new Vector2(-1,0)}};
 
-	// Use this for initialization
-	void Start() {
+#endregion
+#region Unity Methods
+	
+  void Start() {
     offset = new Vector3(0,3,0);
     lastTime = Time.time;
+    GenerateDungeon();
 	}
 	
-	// Update is called once per frame
 	void Update() {
     foreach (KeyCode k in keys.Keys) {
       if (Input.GetKeyDown(k) || 
@@ -38,10 +48,14 @@ public class DungeonController : MonoBehaviour {
     }
 	}
 
-  void MovePlayer(Vector2 dir) {
+#endregion
+#region Public Variables
+
+  public void MovePlayer(Vector2 dir) {
     if (dungeon.CanMove(player.pos + dir)) {
       player.Move(dir);
       offset += new Vector3(dir.x, 0, dir.y);
+      player.IncrementStat(Stat.Moves);
     }
   }
 
@@ -52,4 +66,6 @@ public class DungeonController : MonoBehaviour {
     player.UpdateTransforms();
     plane.BuildTexture(dungeon);
   }
+  
+#endregion
 }
