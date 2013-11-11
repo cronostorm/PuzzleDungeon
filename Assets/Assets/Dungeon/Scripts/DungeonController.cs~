@@ -46,6 +46,14 @@ public class DungeonController : MonoBehaviour {
     if (Input.GetKeyDown("space")) {
       GenerateDungeon();
     }
+    if (Input.GetKeyDown("1")) {
+      plane.Revert();
+      List<int> path = AStar.Pathfind(dungeon.map, player.pos, 
+            player.pos + new Vector2(3,3), dungeon.width);
+      foreach (int i in path) {
+        plane.Highlight(dungeon.GetVec2(i));
+      }
+    }
 	}
 
 #endregion
@@ -62,6 +70,8 @@ public class DungeonController : MonoBehaviour {
   public void GenerateDungeon() {
     plane.Init();
     dungeon = new Dungeon(plane.width, plane.height);
+    player.offset = 
+      new Vector3((plane.width - 1) % 2 * 0.5f, 0, (plane.height % 2 + 1)* 0.5f);
     player.MoveTo(dungeon.GetCenter());
     player.UpdateTransforms();
     plane.BuildTexture(dungeon);

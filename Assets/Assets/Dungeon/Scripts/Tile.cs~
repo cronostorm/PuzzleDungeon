@@ -8,11 +8,6 @@ using System.Collections.Generic;
  */
 public class Tile {
 
-#region Private Variables
-
-  private TileType _type;
-
-#endregion
 #region Public Variables
 
   public enum TileType {Wall, Floor, Water, Lava};
@@ -31,6 +26,11 @@ public class Tile {
   public static Tile Floor  = new Tile(TileType.Floor);
   public static Tile Water  = new Tile(TileType.Water);
   public static Tile Lava   = new Tile(TileType.Lava);
+
+#endregion
+#region Private Variables
+
+  private TileType _type;
 
 #endregion
 #region Constructors
@@ -57,5 +57,15 @@ public class Tile {
   public override int GetHashCode() {
     return (int) this.type;
   }
+#endregion
+#region Public Methods
+  
+  public bool IsPassable() {
+    if (_type == TileType.Wall) {
+      return false;
+    }
+    return true;
+  }
+
 #endregion
 }

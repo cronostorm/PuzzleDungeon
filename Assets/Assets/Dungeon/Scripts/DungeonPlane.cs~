@@ -18,6 +18,8 @@ public class DungeonPlane : MonoBehaviour {
 #endregion 
 #region Private Variables
 
+  private Texture2D tex;
+  private Texture2D modified;
 #endregion
 #region Unity Methods
 
@@ -36,21 +38,36 @@ public class DungeonPlane : MonoBehaviour {
     scale.z = height * 0.9f/9;
     this.gameObject.transform.localScale = scale;
     this.gameObject.transform.localPosition = new Vector3(width/2, 0, height/2);
+    tex = new Texture2D(width * xRes, height * yRes);
+    tex.filterMode =  FilterMode.Point;
+    modified = new Texture2D(width * xRes, height * yRes);
+    modified.filterMode =  FilterMode.Point;
   }
 
   public void BuildTexture(Dungeon d) {
-    Texture2D texture = new Texture2D(width * xRes, height * yRes);
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-        texture.SetPixel(width - x - 1, height - 1 - y, d.GetTile(x, y).color);
+        tex.SetPixel(width - x - 1, height - 1 - y, d.GetTile(x, y).color);
       }
     }
-    texture.Apply();
+    tex.Apply();
 
-    texture.filterMode = FilterMode.Point;
     MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
-    mesh_renderer.sharedMaterial.mainTexture = texture;
+    mesh_renderer.sharedMaterial.mainTexture = tex;
   }
 
+  public void Highlight(Vector2 v) {
+    modified.SetPixel(width - (int) v.x - 1, height - 1 - (int) v.y, Color.yellow);
+    modified.Apply();
+    MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
+    mesh_renderer.sharedMaterial.mainTexture = modified;
+  }
+
+  public void Revert() {
+    MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
+    mesh_renderer.sharedMaterial.mainTexture = tex;
+    modified.SetPixels(tex.GetPixels());
+    modified.Apply();
+  }
 #endregion
 }

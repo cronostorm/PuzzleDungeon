@@ -5,6 +5,10 @@ using System.Collections.Generic;
 public class Dungeon {
 #region Public Variables
 
+  public int MinRooms;
+  public int MaxRooms;
+  public int MinRoomSize;
+  public int MaxRoomSize;
   public Tile[] map;
 
 #endregion
@@ -53,6 +57,10 @@ public class Dungeon {
     return new Vector2((int) (pos.x + _width/2), (int) (pos.z + _height/2));
   }
 
+  public Vector2 GetVec2 (int idx) {
+    return new Vector2(idx % width, idx / width);
+  }
+
   public Vector2 GetCenter() {
     return new Vector2((int) _width/2, (int) _height/2);
   }
@@ -70,7 +78,7 @@ public class Dungeon {
     if (i < 0 || i >= _width || j < 0 || j >= _height) {
       return false;
     }
-    return !(map[i + j * _width] == Tile.Wall);
+    return map[i + j * _width].IsPassable();
   }
 
 #endregion

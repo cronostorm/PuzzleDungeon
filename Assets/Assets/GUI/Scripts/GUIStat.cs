@@ -18,9 +18,9 @@ public class GUIStat : MonoBehaviour {
 
   private Dictionary<Stat, string> HeaderText = 
     new Dictionary<Stat, string>()
-      {{Stat.Health, "Health\t"}, {Stat.Armor, "Armor\t"}, 
-       {Stat.Moves, "Moves\t"}, {Stat.Attack, "Attack\t"}, 
-       {Stat.Magic, "Magic\t"}};
+      {{Stat.Health, "Health "}, {Stat.Armor, "Armor  "}, 
+       {Stat.Moves, "Moves  "}, {Stat.Attack, "Attack "}, 
+       {Stat.Magic, "Magic  "}};
 
 #endregion
 #region Unity Methods

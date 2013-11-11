@@ -58,4 +58,14 @@ public class Tile {
     return (int) this.type;
   }
 #endregion
+#region Public Methods
+  
+  public bool IsPassable() {
+    if (_type == TileType.Wall) {
+      return false;
+    }
+    return true;
+  }
+
+#endregion
 }
