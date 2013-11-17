@@ -821,12 +821,6 @@ MonoBehaviour:
   GemCube: {fileID: 100000, guid: 16d7a2c0cefe8d7448e4ef29b58c72a5, type: 2}
   origin: {x: 0, y: 0, z: 100}
   gameSize: 10
-  gemColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: .921568632, b: .0156862754, a: 1}
-  - {r: 1, g: 0, b: 1, a: 1}
   gemBoard:
   - {fileID: 0}
   - {fileID: 0}
@@ -928,6 +922,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  gemColors:
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: .921568632, b: .0156862754, a: 1}
+  player: {fileID: 1411112513}
 --- !u!4 &1547059200
 Transform:
   m_ObjectHideFlags: 0

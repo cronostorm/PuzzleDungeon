@@ -71,27 +71,29 @@ public class GemGen : MonoBehaviour
             float xdiff = newMousePos.x - oldMousePos.x;
             float ydiff = newMousePos.y - oldMousePos.y;
             
-            Vector3 p = trans.localPosition;
-            int z = (int)(p.x - .5f + gameSize / 2);
-            int x = (int)(p.z - .5f + gameSize / 2);
-            
-            if (Mathf.Abs (xdiff) > Mathf.Abs (ydiff)) {
-                if (xdiff > 0) {
-                    if (z + 1 < gameSize)
-                        swapGemPosition (z + x * gameSize, (z + 1) + x * gameSize);
-                }
-                if (xdiff <= 0) {
-                    if (z - 1 >= 0)
-                        swapGemPosition (z + x * gameSize, (z - 1) + x * gameSize);
-                }
-            } else {
-                if (ydiff > 0) {
-                    if (x + 1 < gameSize)
-                        swapGemPosition (z + x * gameSize, z + (x + 1) * gameSize);
-                }
-                if (ydiff <= 0) {
-                    if (x - 1 >= 0)
-                        swapGemPosition (z + x * gameSize, z + (x - 1) * gameSize);
+            if (trans != null) {
+                Vector3 p = trans.localPosition;
+                int z = (int)(p.x - .5f + gameSize / 2);
+                int x = (int)(p.z - .5f + gameSize / 2);
+                
+                if (Mathf.Abs (xdiff) > Mathf.Abs (ydiff)) {
+                    if (xdiff > 0) {
+                        if (z + 1 < gameSize)
+                            swapGemPosition (z + x * gameSize, (z + 1) + x * gameSize);
+                    }
+                    if (xdiff <= 0) {
+                        if (z - 1 >= 0)
+                            swapGemPosition (z + x * gameSize, (z - 1) + x * gameSize);
+                    }
+                } else {
+                    if (ydiff > 0) {
+                        if (x + 1 < gameSize)
+                            swapGemPosition (z + x * gameSize, z + (x + 1) * gameSize);
+                    }
+                    if (ydiff <= 0) {
+                        if (x - 1 >= 0)
+                            swapGemPosition (z + x * gameSize, z + (x - 1) * gameSize);
+                    }
                 }
             }
         }
@@ -180,7 +182,7 @@ public class GemGen : MonoBehaviour
      */
     void updateStat (Color gemColor)
     {
-        //Debug.Log("Clearing " + gemColor);
+        
         if (gemColor == (Color.red)) {
             player.IncrementStat (Stat.Health);
         }
@@ -236,7 +238,7 @@ public class GemGen : MonoBehaviour
                 prevColor = currColor;
                 // Check if we need to clear. Only clear if 3+ colored gems in a row.
                 if (clearCount >= 3) {
-                    updateStat (currColor);
+                    updateStat (prevColor);
                     for (int i = start_clear; i < start_clear + clearCount; i++) {
                         if (row) {
                             gemBoard [arrayIndex + i * gameSize].renderer.enabled = false;
