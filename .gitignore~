@@ -4,10 +4,10 @@ Obj
 Build
 Temp
 *.csproj
+*.pidb
 *.sln
 *.userprefs
 *.user
 *.unityproj
 *.DS_Store
-*.pidb
 *.app

@@ -4,10 +4,13 @@ Obj
 Build
 Temp
 *.csproj
+Assembly-CSharp.pidb
+Assembly-CSharp-Editor.pidb
+Assembly-CSharp-firstPass.pidb
+*.pidb
 *.sln
 *.userprefs
 *.user
 *.unityproj
 *.DS_Store
-*.pidb
 *.app
