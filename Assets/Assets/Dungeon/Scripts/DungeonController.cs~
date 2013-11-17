@@ -9,6 +9,11 @@ public class DungeonController : MonoBehaviour {
 #region Public Variables
   
   public DungeonPlane plane;
+  public int minRooms; 
+  public int maxRooms;
+  public int minRoomSize; 
+  public int maxRoomSize;
+  public int maxExtraTunnels;
   public Dungeon dungeon;
   public Character player;
   public float move_rate = 0.01f;
@@ -24,6 +29,7 @@ public class DungeonController : MonoBehaviour {
       {KeyCode.DownArrow,  new Vector2(0,-1)},
       {KeyCode.RightArrow, new Vector2(+1,0)},
       {KeyCode.LeftArrow,  new Vector2(-1,0)}};
+  private Vector2 pathtohere;
 
 #endregion
 #region Unity Methods
@@ -48,8 +54,12 @@ public class DungeonController : MonoBehaviour {
     }
     if (Input.GetKeyDown("1")) {
       plane.Revert();
-      List<int> path = AStar.Pathfind(dungeon.map, player.pos, 
-            player.pos + new Vector2(3,3), dungeon.width);
+      pathtohere = player.pos;
+      plane.Highlight(pathtohere);
+    }
+    if (Input.GetKeyDown("2")) {
+      plane.Revert();
+      List<int> path = AStar.Pathfind(dungeon, player.pos, pathtohere);
       foreach (int i in path) {
         plane.Highlight(dungeon.GetVec2(i));
       }
@@ -63,16 +73,17 @@ public class DungeonController : MonoBehaviour {
     if (dungeon.CanMove(player.pos + dir)) {
       player.Move(dir);
       offset += new Vector3(dir.x, 0, dir.y);
-      player.IncrementStat(Stat.Moves);
     }
   }
 
   public void GenerateDungeon() {
     plane.Init();
     dungeon = new Dungeon(plane.width, plane.height);
+    dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
+    dungeon.Init();
     player.offset = 
-      new Vector3((plane.width - 1) % 2 * 0.5f, 0, (plane.height % 2 + 1)* 0.5f);
-    player.MoveTo(dungeon.GetCenter());
+      new Vector3((dungeon.width + 1) % 2 * 0.5f, 0.5f, (dungeon.height + 1) % 2 * 0.5f);
+    player.MoveTo(dungeon.GetStart());
     player.UpdateTransforms();
     plane.BuildTexture(dungeon);
   }

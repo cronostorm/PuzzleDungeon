@@ -54,6 +54,8 @@ public class DungeonPlane : MonoBehaviour {
 
     MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
     mesh_renderer.sharedMaterial.mainTexture = tex;
+    modified.SetPixels(tex.GetPixels());
+    modified.Apply();
   }
 
   public void Highlight(Vector2 v) {

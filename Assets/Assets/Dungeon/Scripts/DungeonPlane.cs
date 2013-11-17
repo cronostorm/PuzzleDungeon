@@ -11,7 +11,6 @@ public class DungeonPlane : MonoBehaviour {
 
   public int width = 0;
   public int height = 0;
-  public Vector3 offset = new Vector3(0, 0, 0);
   public int xRes = 1;
   public int yRes = 1;
 

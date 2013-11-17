@@ -17,6 +17,7 @@ public class Character : MonoBehaviour {
 #region Public Variables
 
   public Vector2 pos;
+  [HideInInspector]
   public Vector3 offset= new Vector3(0,0.5f,0.5f);
   public Camera cam;
   public float camy = 2.5f;

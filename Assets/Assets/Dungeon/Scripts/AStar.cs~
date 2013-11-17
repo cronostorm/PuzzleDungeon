@@ -37,7 +37,7 @@ public static class AStar {
    * idx: the index of the corresponding node
    * F: G + H value of the corresponding node
    */
-  struct pair { 
+  class pair : IComparable<pair> { 
     public int F;
     int _idx;
     public int idx {get {return _idx;}}
@@ -61,6 +61,10 @@ public static class AStar {
       hash = hash * 31 + idx;
       return idx;
     }
+
+    public int CompareTo(pair other) { 
+      return this.F.CompareTo(other.F);
+    }
   }
 
 #endregion
@@ -68,28 +72,28 @@ public static class AStar {
 
   /*
    * AStar pathfinding from start to end.
-   * map:   The array of tiles that make up the dungeon
+   * d:     The dungeon for Astar 
    * start: The start index represented as a Vector2
    * end:   The end index represented as a Vector2
-   * width: The width of the dungeon
    */
-  public static List<int> Pathfind(Tile[] map, Vector2 start, Vector2 end, int width) {
-    return Pathfind(map, (int) (start.y * width + start.x),
-       (int) (end.y * width + end.x), width);
+  public static List<int> Pathfind(Dungeon d, Vector2 start, Vector2 end, int mode = 1) {
+    return Pathfind(d, (int) (start.y * d.width + start.x),
+       (int) (end.y * d.width + end.x), mode);
   }
 
-  public static List<int> Pathfind(Tile[] map, int start, int end, int width) {
+  public static List<int> Pathfind(Dungeon d, int start, int end, int mode = 1) {
     /* initialize datastructs
      * open:    list of open nodes, potential to be visited
      * closed:  set of closed nodes, done visiting
      * nodes:   Dictionary of all nodes for easy reference
      */
+
     List<pair> open = new List<pair>();
     Dictionary<int, node> nodes = new Dictionary<int, node>();
     HashSet<int> closed = new HashSet<int>();
 
     // create and add the starting node to the open list
-    node first = new node (0, Manhattan(start, end, width), start);
+    node first = new node (0, Manhattan(start, end, d.width), start);
     nodes.Add(start, first);
     open.Add(new pair(first.G + first.H, start));
 
@@ -103,16 +107,15 @@ public static class AStar {
       closed.Add(current);
 
       // Check all the current node's neighbors
-      foreach (int n in neighbors(current, map, width)) {
+      foreach (int n in neighbors(current, d, mode)) {
         int neighbor = current + n;
         if (!closed.Contains(neighbor)) {
           // calculate neighbor's G value
-          int G = currentNode.G + 1;
-          
+          int G = currentNode.G + d.GetTile(current + n).Cost();
           // If the neighbor is not in open, add it to open
           int openidx = open.FindIndex(e => e.idx == neighbor);
           if (openidx < 0) {
-            int H = Manhattan(current, end, width);
+            int H = Manhattan(current, end, d.width);
             nodes[neighbor] = new node(G, H, current);
             open.Add(new pair(G + H, neighbor));
           }
@@ -152,20 +155,22 @@ public static class AStar {
    * Function to calculate neighbors
    * Modify tile.IsPassable() to change A* behavior
    */
-  private static HashSet<int> neighbors(int idx, Tile[] map, int width) {
-    int x = idx % width;
-    int y = idx / width;
-    int height = map.Length / width;
-    HashSet<int> neighbors = new HashSet<int>() {-width, -1, +1, +width};
-    if (x == width - 1)   neighbors.Remove(+1);
+  private static HashSet<int> neighbors(int idx, Dungeon d, int mode) {
+    int x = idx % d.width;
+    int y = idx / d.width;
+    int height = d.width;
+    HashSet<int> neighbors = new HashSet<int>() {-d.width, -1, +1, +d.width};
+    if (x == d.width - 1)   neighbors.Remove(+1);
     if (x == 0)           neighbors.Remove(-1);
-    if (y == height - 1)  neighbors.Remove(+width);
-    if (y == 0)           neighbors.Remove(-width);
+    if (y == height - 1)  neighbors.Remove(+d.width);
+    if (y == 0)           neighbors.Remove(-d.width);
+
     HashSet<int> output = new HashSet<int>();
     foreach (int n in neighbors) {
-      if (idx + n > 0 && idx + n < map.Length 
-          && map[idx + n].IsPassable()) {
-        output.Add(n);
+      if (idx + n > 0 && idx + n < d.width * d.height) {
+        if (d.GetTile(idx + n).IsPassable(mode)) {
+          output.Add(n);
+        }
       }
     }
     return output;
@@ -179,7 +184,7 @@ public static class AStar {
     int y0 = start / width;
     int x1 = end % width;
     int y1 = end / width;
-    return (Math.Abs(x1 - x0) + Math.Abs(y1 - y0));
+    return (Math.Abs(x1 - x0) + Math.Abs(y1 - y0)) * 4;
   }
 
 #endregion

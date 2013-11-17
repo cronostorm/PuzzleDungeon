@@ -46,3 +46,15 @@ I: Added discrete player controls, added specific tile types, checks for
 	 colliisions with walls.
 B: Added variable handles (Board size, number of colors, kind of colors)
 	 Falling and swapping implemented.
+	There is currently a bug where the board randomly resets after update.
+	However when update is only called once, the board gets cleared and then blocks fall down, which indicates that
+	mechanic works.
+
+Week 3 - 
+I: Added A* path finding, Press 1 to show closest path to a tile 3,3 up-right
+	ofyou
+B: Added swapping gems
+
+Week 4 - 
+I: Added intelligent dungeon generation. Press 1 to put a marker down, Press 2
+	to find the shortest path to the marker

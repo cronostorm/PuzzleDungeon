@@ -10,3 +10,4 @@ Temp
 *.unityproj
 *.DS_Store
 *.pidb
+*.app
