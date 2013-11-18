@@ -58,3 +58,9 @@ B: Added swapping gems
 Week 4 - 
 I: Added intelligent dungeon generation. Press 1 to put a marker down, Press 2
 	to find the shortest path to the marker
+B: Clearing gems increases their corresponding stat. Swap gems by dragging in a direction. Fixed bug that so that 
+	you can only drag on the board to swap gems.
+
+Week 5 -
+B: Added monsters and fixed bugs in gem board. Gem board also swaps now and is essentially complete except for additional
+ 	quality improvements. 

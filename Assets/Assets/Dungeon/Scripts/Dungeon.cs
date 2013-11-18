@@ -211,6 +211,22 @@ public class Dungeon {
   public Vector3 GetTilePos(Vector2 idx) {
     return new Vector3(idx.x, 0, idx.y);
   }
+    
+  public int GetNumRooms() {
+    return rooms.Count;
+  }
+
+  public Vector2 GetRoom(int roomNum) {
+    if (roomNum >= rooms.Count){
+      //
+      Debug.LogError("Room number does not exist");
+      return new Vector2(0, 0);
+    }
+
+    return new Vector2((int) rooms[roomNum].center.x,
+      (int) rooms[roomNum].center.y);
+  }
+
 
 #endregion
 #region Public Methods

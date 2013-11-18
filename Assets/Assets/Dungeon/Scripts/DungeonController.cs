@@ -13,10 +13,14 @@ public class DungeonController : MonoBehaviour {
   public int maxRooms;
   public int minRoomSize; 
   public int maxRoomSize;
+  public int minMonsters;
+  public int maxMonsters;
   public int maxExtraTunnels;
   public Dungeon dungeon;
   public Character player;
+  public ArrayList monsters = new ArrayList();
   public float move_rate = 0.01f;
+  public GameObject MonsterObj;
 
 #endregion
 #region Private Variables
@@ -38,9 +42,9 @@ public class DungeonController : MonoBehaviour {
     offset = new Vector3(0,3,0);
     lastTime = Time.time;
     GenerateDungeon();
-	}
+  }
 	
-	void Update() {
+  void Update() {
     foreach (KeyCode k in keys.Keys) {
       if (Input.GetKeyDown(k) || 
           (Input.GetKey(k) && Time.time - lastTime > move_rate)) {
@@ -85,6 +89,21 @@ public class DungeonController : MonoBehaviour {
       new Vector3((dungeon.width + 1) % 2 * 0.5f, 0.5f, (dungeon.height + 1) % 2 * 0.5f);
     player.MoveTo(dungeon.GetStart());
     player.UpdateTransforms();
+    // Build monsters.
+    int numMonsters = Random.Range(minMonsters, maxMonsters + 1);
+    for (int i = 0; i < numMonsters; i++) {
+      GameObject temp = Instantiate(MonsterObj) as GameObject;
+      Monster m = temp.GetComponent<Monster>();
+      // Generate monster in new random position.
+      int numRooms = dungeon.GetNumRooms();
+      m.offset =
+        new Vector3((dungeon.width + 1) % 2 * 0.5f, 0.5f,
+          (dungeon.height + 1) % 2 * 0.5f);
+      int randRoom = Random.Range (0, numRooms);
+      m.MoveTo(dungeon.GetRoom (randRoom));
+      // m.UpdateTransforms();
+      monsters.Add(m);
+    }
     plane.BuildTexture(dungeon);
   }
   

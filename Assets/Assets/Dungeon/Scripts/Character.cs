@@ -76,7 +76,7 @@ public class Character : MonoBehaviour {
     pos = dir;
   }
 
-  public void UpdateTransforms () {
+  public virtual void UpdateTransforms () {
 	  this.gameObject.transform.localPosition = 
       new Vector3(pos.x, 0, pos.y) + offset;
     cam.transform.localPosition = 

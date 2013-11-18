@@ -235,7 +235,7 @@ public class GemGen : MonoBehaviour
                 // If prevColor already seen, it might be a row.
                 clearCount++;
             } else {
-                prevColor = currColor;
+                
                 // Check if we need to clear. Only clear if 3+ colored gems in a row.
                 if (clearCount >= 3) {
                     updateStat (prevColor);
@@ -249,6 +249,7 @@ public class GemGen : MonoBehaviour
                     }
                 }
                 // Reset counts. 
+                prevColor = currColor;
                 clearCount = 1;
                 start_clear = c;
             }
