@@ -68,6 +68,25 @@ public class DungeonController : MonoBehaviour {
         plane.Highlight(dungeon.GetVec2(i));
       }
     }
+
+    // Monster turns
+    plane.Revert();
+    for (int i = 0; i < monsters.Count; i++) {
+      Monster m = (Monster)monsters[i];
+      // Monster move
+      List<int> path = AStar.Pathfind(dungeon, m.pos, player.pos);
+      int start = -1;
+      // Move along path.
+      foreach (int j in path) {
+        if (start == -1){
+          start = j;
+        }
+        plane.Highlight(dungeon.GetVec2(j));
+      }
+      // m.MoveTo(dungeon.GetVec2(start));
+      // Check if I can attack
+      m.AttackPlayer(player);
+    }
 	}
 
 #endregion
@@ -89,6 +108,8 @@ public class DungeonController : MonoBehaviour {
       new Vector3((dungeon.width + 1) % 2 * 0.5f, 0.5f, (dungeon.height + 1) % 2 * 0.5f);
     player.MoveTo(dungeon.GetStart());
     player.UpdateTransforms();
+    // Clear old monsters.
+    monsters.Clear();
     // Build monsters.
     int numMonsters = Random.Range(minMonsters, maxMonsters + 1);
     for (int i = 0; i < numMonsters; i++) {
@@ -99,7 +120,8 @@ public class DungeonController : MonoBehaviour {
       m.offset =
         new Vector3((dungeon.width + 1) % 2 * 0.5f, 0.5f,
           (dungeon.height + 1) % 2 * 0.5f);
-      int randRoom = Random.Range (0, numRooms);
+      // Don't spawn in same spot as player (room 0).
+      int randRoom = Random.Range (1, numRooms);
       m.MoveTo(dungeon.GetRoom (randRoom));
       // m.UpdateTransforms();
       monsters.Add(m);

@@ -95,5 +95,11 @@ public class Character : MonoBehaviour {
     if (OnStatsUpdate != null) OnStatsUpdate();
   }
 
+  public float DistanceToObject(Vector3 obj_location) {
+    Vector3 self = this.gameObject.transform.localPosition;
+    float dist = Vector3.Distance(self, obj_location);
+    return dist;
+  }
+
 #endregion
 }
