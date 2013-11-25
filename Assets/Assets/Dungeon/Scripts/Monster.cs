@@ -7,7 +7,6 @@ using System.Collections.Generic;
  */
 public class Monster : Character {
 
-
   float attack_range = 2f;
 
   public override void UpdateTransforms () {
@@ -15,11 +14,18 @@ public class Monster : Character {
       new Vector3(pos.x, 0, pos.y) + offset;
   }
 
-
+  public void InitStats (int level) {
+    characterStats = new Dictionary<Stat, int>()
+      {{Stat.Health, Random.Range(1,5 * level)},
+       {Stat.Moves, Random.Range(1,1 * level + 1)},
+       {Stat.Attack, Random.Range(1,5 * level)},
+       {Stat.Armor, Random.Range(0,2 * level)},
+       {Stat.Magic, Random.Range(0,2 * level)}};
+  }
 
   public bool AttackPlayer(Character player) {
     // Also check if player in sight (not through walls).
-    if (DistanceToObject(player.transform.localPosition) < attack_range) {
+    if (DistanceToCharacter(player) < attack_range) {
       player.DecrementStat(Stat.Health);
       return true;
     }

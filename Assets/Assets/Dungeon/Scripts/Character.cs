@@ -33,7 +33,7 @@ public class Character : MonoBehaviour {
 #endregion
 #region Private Variables
 
-  private Dictionary<Stat, int>characterStats;
+  protected Dictionary<Stat, int>characterStats;
 
 #endregion
 #region Unity Methods
@@ -64,11 +64,13 @@ public class Character : MonoBehaviour {
 #region Public Methods
 
   public void Move(Vector2 dir) {
-    pos += dir;
+    
+      pos += dir;
   }
   
   public void MoveTo(Vector2 dir) {
-    pos = dir;
+
+      pos = dir;
   }
 
   public virtual void UpdateTransforms () {
@@ -109,6 +111,10 @@ public class Character : MonoBehaviour {
     Vector3 self = this.gameObject.transform.localPosition;
     float dist = Vector3.Distance(self, obj_location);
     return dist;
+  }
+
+  public float DistanceToCharacter(Character c) {
+    return DistanceToObject(c.transform.localPosition);
   }
 
 #endregion

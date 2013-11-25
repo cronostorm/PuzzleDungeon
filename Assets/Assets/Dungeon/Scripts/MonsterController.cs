@@ -10,6 +10,8 @@ public class MonsterController : Controller {
   public Character player;
   public int minMonsters;
   public int maxMonsters;
+  public int maxMonsterLevel;
+  public int minMonsterLevel;
   public DungeonController dungeonController;
 
   private Dungeon _dungeon;
@@ -41,7 +43,9 @@ public class MonsterController : Controller {
         // Monster move
         List<int> path = AStar.Pathfind(_dungeon, m.pos, player.pos);
         // Move along path.
-        m.MoveTo(_dungeon.GetVec2(path[path.Count - 1]));
+        if (path.Count != 0) {
+          m.MoveTo(_dungeon.GetVec2(path[path.Count - 1]));
+        }
         // Check if I can attack
         m.AttackPlayer(player);
       }
@@ -55,7 +59,7 @@ public class MonsterController : Controller {
     }
   }
 
-  void GenMonsters() {
+  public void GenMonsters() {
     DeleteMonsters();
     monsters.Clear();
     // Build monsters.
@@ -63,6 +67,8 @@ public class MonsterController : Controller {
     for (int i = 0; i < numMonsters; i++) {
       GameObject temp = Instantiate(MonsterObj) as GameObject;
       Monster m = temp.GetComponent<Monster>();
+      int monsterLevel = Random.Range(minMonsterLevel, maxMonsterLevel + 1);
+      m.InitStats(monsterLevel);
       // Generate monster in new random position.
       int numRooms = _dungeon.GetNumRooms();
       m.offset =

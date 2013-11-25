@@ -64,9 +64,7 @@ public class DungeonController : Controller {
         EndTurn();
       }
 
-      if (Input.GetKeyDown("space")) {
-        GenerateDungeon();
-      }
+
       if (Input.GetKeyDown("1")) {
         plane.Revert();
         pathtohere = player.pos;
@@ -103,6 +101,7 @@ public class DungeonController : Controller {
       new Vector3((_dungeon.width + 1) % 2 * 0.5f, 0.5f, (_dungeon.height + 1) % 2 * 0.5f);
     player.MoveTo(_dungeon.GetStart());
     player.UpdateTransforms();
+    player.FullReset();
     // Clear old monsters.
     plane.BuildTexture(_dungeon);
     OnDungeonUpdate();

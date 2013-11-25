@@ -53,7 +53,8 @@ public class GemGen : Controller
     // Update is called once per frame
     void Update ()
     {
-      if (turn == true) {   
+      if (turn == true) {
+      
         if (gaveMove == false) {
           player.TurnReset();
           gaveMove = true;
@@ -118,7 +119,8 @@ public class GemGen : Controller
       }
       postMove ();
     }
- 
+
+    // Clears board initally without animation and delay. 
     void doAllMoves ()
     {
         bool matches_found = true;
