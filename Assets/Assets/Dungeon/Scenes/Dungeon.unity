@@ -228,6 +228,8 @@ MonoBehaviour:
   player: {fileID: 13629841}
   minMonsters: 1
   maxMonsters: 4
+  maxMonsterLevel: 0
+  minMonsterLevel: 1
   dungeonController: {fileID: 520189143}
 --- !u!1 &57262162
 GameObject:
@@ -474,7 +476,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: .5
+    height: .49000001
   near clip plane: .300000012
   far clip plane: 1000
   field of view: 60
@@ -631,7 +633,7 @@ Camera:
     x: 0
     y: .5
     width: 1
-    height: .5
+    height: .50999999
   near clip plane: .300000012
   far clip plane: 5
   field of view: 60
@@ -713,6 +715,85 @@ Transform:
   - {fileID: 259080992}
   - {fileID: 1804908319}
   m_Father: {fileID: 118315985}
+--- !u!1 &1220568102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1220568107}
+  - 20: {fileID: 1220568106}
+  - 124: {fileID: 1220568105}
+  - 92: {fileID: 1220568104}
+  - 81: {fileID: 1220568103}
+  m_Layer: 0
+  m_Name: BufferCam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1220568103
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220568102}
+  m_Enabled: 0
+--- !u!92 &1220568104
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220568102}
+  m_Enabled: 1
+--- !u!124 &1220568105
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220568102}
+  m_Enabled: 0
+--- !u!20 &1220568106
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220568102}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: .0196078438}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: .49000001
+    width: 1
+    height: .00999999978
+  near clip plane: .300000012
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 100
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_HDR: 0
+--- !u!4 &1220568107
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220568102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &1254982004
 GameObject:
   m_ObjectHideFlags: 0
