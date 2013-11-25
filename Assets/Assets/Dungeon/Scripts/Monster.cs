@@ -20,7 +20,7 @@ public class Monster : Character {
   public bool AttackPlayer(Character player) {
     // Also check if player in sight (not through walls).
     if (DistanceToObject(player.transform.localPosition) < attack_range) {
-      player.DecerementStat(Stat.Health);
+      player.DecrementStat(Stat.Health);
       return true;
     }
     return false;

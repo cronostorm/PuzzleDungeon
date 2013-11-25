@@ -1,8 +1,8 @@
 # Unity .gitignore file.
-Library
 Obj
 Build
 Temp
+*_Data
 *.csproj
 *.pidb
 *.sln
@@ -11,3 +11,10 @@ Temp
 *.unityproj
 *.DS_Store
 *.app
+*.exe
+*.zip
+/Library/FailedAssetImports.txt
+/Library/cache/
+/Library/previews/
+/Library/ScriptAssemblies
+

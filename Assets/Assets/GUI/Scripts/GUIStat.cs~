@@ -40,6 +40,7 @@ public class GUIStat : MonoBehaviour {
   }
   
   void Update () {
+    Debug.Log(character.GetStat(s));
   }
 
 #endregion

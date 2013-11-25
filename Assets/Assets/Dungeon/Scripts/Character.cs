@@ -33,11 +33,6 @@ public class Character : MonoBehaviour {
 #endregion
 #region Private Variables
 
-  private int _health = 0;
-  private int _moves  = 0;
-  private int _attack = 0;
-  private int _armor  = 0;
-  private int _magic  = 0;
   private Dictionary<Stat, int>characterStats;
 
 #endregion
@@ -45,8 +40,8 @@ public class Character : MonoBehaviour {
 
 	void Start() {
     characterStats = new Dictionary<Stat, int>()
-      {{Stat.Health, _health}, {Stat.Moves, _moves}, {Stat.Attack, _attack},
-       {Stat.Armor, _armor}, {Stat.Magic, _magic}};
+      {{Stat.Health, 1}, {Stat.Moves, 1}, {Stat.Attack, 1},
+       {Stat.Armor, 0}, {Stat.Magic, 0}};
 	}
 	
 	void Update() {
@@ -56,11 +51,11 @@ public class Character : MonoBehaviour {
 #endregion
 #region Accessor Methods
 
-  public int health   {get {return _health;}}
-  public int moves    {get {return _moves;}}
-  public int attack   {get {return _attack;}}
-  public int armor    {get {return _armor;}}
-  public int magic    {get {return _magic;}}
+  public int health   {get {return characterStats[Stat.Health];}}
+  public int moves    {get {return characterStats[Stat.Moves];}}
+  public int attack   {get {return characterStats[Stat.Attack];}}
+  public int armor    {get {return characterStats[Stat.Armor];}}
+  public int magic    {get {return characterStats[Stat.Magic];}}
   public int GetStat(Stat s) {
     return characterStats[s];
   }
@@ -89,10 +84,25 @@ public class Character : MonoBehaviour {
     if (OnStatsUpdate != null) OnStatsUpdate();
   }
 
-  public void DecerementStat(Stat s) {
+  public void DecrementStat(Stat s) {
     characterStats[s] -= 1;
     // Trigger Event OnStatsUpdate
     if (OnStatsUpdate != null) OnStatsUpdate();
+  }
+
+  public void FullReset() {
+    characterStats = new Dictionary<Stat, int>()
+      {{Stat.Health, 1}, {Stat.Moves, 1}, {Stat.Attack, 1},
+       {Stat.Armor, 0}, {Stat.Magic, 0}};
+    OnStatsUpdate();
+  }
+
+  public void TurnReset() {
+    characterStats[Stat.Moves] = 1;
+    characterStats[Stat.Attack] = 1;
+    characterStats[Stat.Armor] = 0;
+    characterStats[Stat.Magic] = 0;
+    OnStatsUpdate();
   }
 
   public float DistanceToObject(Vector3 obj_location) {

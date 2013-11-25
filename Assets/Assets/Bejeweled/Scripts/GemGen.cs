@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class GemGen : MonoBehaviour
+public class GemGen : Controller
 {
  
     public GameObject GemCube;
@@ -24,6 +24,7 @@ public class GemGen : MonoBehaviour
     public Color[] gemColors = {Color.green, Color.magenta, Color.red,
      Color.blue, Color.yellow};
     private float t;  // For time
+    private bool gaveMove = false;
     
     // For Gem movement
     Transform trans;
@@ -45,13 +46,19 @@ public class GemGen : MonoBehaviour
         }
         cam = Camera.main;
         
+        doAllMoves();
     }
-    
+
     
     // Update is called once per frame
     void Update ()
     {
-            
+      if (turn == true) {   
+        if (gaveMove == false) {
+          player.TurnReset();
+          gaveMove = true;
+        }
+
         // Check if mouse button down and gets gem that you're clicking on.
         if (Input.GetMouseButtonDown (0)) {
             oldMousePos = Input.mousePosition;
@@ -60,7 +67,6 @@ public class GemGen : MonoBehaviour
             bool foundObj = Physics.Raycast (r, out hit);
             if (foundObj) {
                 trans = hit.transform;
-                
             }
         }
         
@@ -78,40 +84,63 @@ public class GemGen : MonoBehaviour
                 
                 if (Mathf.Abs (xdiff) > Mathf.Abs (ydiff)) {
                     if (xdiff > 0) {
-                        if (z + 1 < gameSize)
+                        if (z + 1 < gameSize) {
                             swapGemPosition (z + x * gameSize, (z + 1) + x * gameSize);
+                            EndTurn();
+                            gaveMove = false;
+                        }
                     }
                     if (xdiff <= 0) {
-                        if (z - 1 >= 0)
+                        if (z - 1 >= 0) {
                             swapGemPosition (z + x * gameSize, (z - 1) + x * gameSize);
+                            EndTurn();
+                            gaveMove = false;
+                        }
                     }
                 } else {
                     if (ydiff > 0) {
-                        if (x + 1 < gameSize)
+                        if (x + 1 < gameSize) {
                             swapGemPosition (z + x * gameSize, z + (x + 1) * gameSize);
+                            EndTurn();
+                            gaveMove = false;
+                        }
                     }
                     if (ydiff <= 0) {
-                        if (x - 1 >= 0)
+                        if (x - 1 >= 0) {
                             swapGemPosition (z + x * gameSize, z + (x - 1) * gameSize);
+                            EndTurn();
+                            gaveMove = false;
+                        }
                     }
                 }
             }
         }
-    
-        // After I've maybe moved something, move.
-        postMove ();
-        
-        
+      }
+      postMove ();
     }
  
-    
-    
+    void doAllMoves ()
+    {
+        bool matches_found = true;
+        while (matches_found == true) {
+            matches_found = false;
+            for (int col = 0; col < gameSize; col++) {
+                bool r_found = checkForMatches (col, true);  // in row
+                bool c_found = checkForMatches (col, false); // in column
+                matches_found = r_found || c_found || matches_found;
+            }
+            if (matches_found) {
+                shiftBoardDown ();
+            }
+        }
+        player.FullReset();
+    }
+
     // Function to be called post move to update the board.
     void postMove ()
     {
         bool matches_found = false;
         if (Time.time - t > 0.5f) {
-            
             for (int col = 0; col < gameSize; col++) {
                 bool r_found = checkForMatches (col, true);  // in row
                 bool c_found = checkForMatches (col, false); // in column
@@ -122,7 +151,6 @@ public class GemGen : MonoBehaviour
             }
             t = Time.time;
         }
-     
     }
  
     // Generates a randomly colored gem given a position on the board.
