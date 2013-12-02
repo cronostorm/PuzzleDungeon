@@ -28,7 +28,7 @@ public class Tile {
   private Dictionary<TileType, Color> _TileColors = 
     new Dictionary<TileType, Color> 
     {{TileType.Stone, Color.black},
-     {TileType.Wall,  Color.white},
+     {TileType.Wall,  Color.black},
      {TileType.Floor, Color.grey},
      {TileType.Water, Color.blue},
      {TileType.Lava,  Color.red}};

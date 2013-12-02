@@ -184,6 +184,10 @@ public class Dungeon {
     return new Vector2((int) rooms[0].center.x, (int) rooms[0].center.y);
   }
 
+  public int GetTileType(int x, int y) {
+    return map[x + y * _width];
+  }
+
   public Tile GetTile (int idx) {
     return tiles[map[idx]];
   }
@@ -211,6 +215,22 @@ public class Dungeon {
   public Vector3 GetTilePos(Vector2 idx) {
     return new Vector3(idx.x, 0, idx.y);
   }
+    
+  public int GetNumRooms() {
+    return rooms.Count;
+  }
+
+  public Vector2 GetRoom(int roomNum) {
+    if (roomNum >= rooms.Count){
+      //
+      Debug.LogError("Room number does not exist");
+      return new Vector2(0, 0);
+    }
+
+    return new Vector2((int) rooms[roomNum].center.x,
+      (int) rooms[roomNum].center.y);
+  }
+
 
 #endregion
 #region Public Methods

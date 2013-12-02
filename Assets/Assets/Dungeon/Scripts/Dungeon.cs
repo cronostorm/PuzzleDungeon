@@ -184,6 +184,10 @@ public class Dungeon {
     return new Vector2((int) rooms[0].center.x, (int) rooms[0].center.y);
   }
 
+  public int GetTileType(int i, int j) {
+    return map[i + j * _width];
+  }
+
   public Tile GetTile (int idx) {
     return tiles[map[idx]];
   }

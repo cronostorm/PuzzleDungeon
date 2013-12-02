@@ -11,8 +11,9 @@ public class DungeonPlane : MonoBehaviour {
 
   public int width = 0;
   public int height = 0;
-  public int xRes = 1;
-  public int yRes = 1;
+  public int xRes = 16;
+  public int yRes = 16;
+  public Texture2D tileSprites;
 
 #endregion 
 #region Private Variables
@@ -44,9 +45,18 @@ public class DungeonPlane : MonoBehaviour {
   }
 
   public void BuildTexture(Dungeon d) {
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        tex.SetPixel(width - x - 1, height - 1 - y, d.GetTile(x, y).color);
+    
+    Color[][] sprites = new Color[5][];
+    sprites[0] = tileSprites.GetPixels(xRes * 0, 0, xRes, yRes);
+    sprites[1] = tileSprites.GetPixels(xRes * 0, 0, xRes, yRes);
+    sprites[2] = tileSprites.GetPixels(xRes * 1, 0, xRes, yRes);
+    sprites[3] = tileSprites.GetPixels(xRes * 2, 0, xRes, yRes);
+    sprites[4] = tileSprites.GetPixels(xRes * 3, 0, xRes, yRes);
+
+    for (int x = 0; x < width * xRes; x += xRes) {
+      for (int y = 0; y < height * yRes; y+= yRes) {
+        tex.SetPixels(width * xRes - x - xRes, height * yRes - yRes - y, 
+            xRes, yRes, sprites[d.GetTileType(x/xRes, y/yRes)]);
       }
     }
     tex.Apply();

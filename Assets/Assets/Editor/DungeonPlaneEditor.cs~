@@ -8,7 +8,6 @@ public class DungeonPlaneEditor : Editor {
     DrawDefaultInspector();
     if(GUILayout.Button("new map")) { 
       ((DungeonController) target).GenerateDungeon();
-      Debug.Log(EditorUtility.IsPersistent((Object) target.dungeon));
     }
   }
 }

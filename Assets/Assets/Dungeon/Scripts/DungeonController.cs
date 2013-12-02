@@ -107,5 +107,18 @@ public class DungeonController : Controller {
     OnDungeonUpdate();
   }
   
+  public void EditorDungeon() {
+    plane.Init();
+    _dungeon = new Dungeon(plane.width, plane.height);
+    _dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
+    _dungeon.Init();
+    player.offset = 
+      new Vector3((_dungeon.width + 1) % 2 * 0.5f, 0.5f, (_dungeon.height + 1) % 2 * 0.5f);
+    player.MoveTo(_dungeon.GetStart());
+    player.UpdateTransforms();
+    // Clear old monsters.
+    plane.BuildTexture(_dungeon);
+  }
+
 #endregion
 }
