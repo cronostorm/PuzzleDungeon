@@ -272,6 +272,7 @@ MonoBehaviour:
   gemController: {fileID: 1547059199}
   dungeonController: {fileID: 520189143}
   monsterController: {fileID: 41096785}
+  gameOverPopup: {fileID: 1109477942}
 --- !u!1 &118315984
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +741,46 @@ Transform:
   - {fileID: 259080992}
   - {fileID: 1804908319}
   m_Father: {fileID: 118315985}
+--- !u!1 &1109477940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1109477941}
+  - 114: {fileID: 1109477942}
+  m_Layer: 0
+  m_Name: GameOverPopup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109477941
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1109477940}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.7549448, y: .5, z: 11.7509756}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &1109477942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1109477940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27491ab709b6bc8419cc043de08a608f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggle: 0
+  click: 0
 --- !u!1 &1220568102
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class GameFlowController : MonoBehaviour {
   public GemGen gemController;
   public DungeonController dungeonController;
   public MonsterController monsterController;
+  public GameOverPopup gameOverPopup;
 
 #endregion
 #region Unity Methods
@@ -33,6 +34,7 @@ public class GameFlowController : MonoBehaviour {
        {State.Dungeon,  dungeonController}, 
        {State.AI,  monsterController}};
     _controllers[_state].Toggle(true);
+
   }
 
   void OnEnable() {
@@ -50,18 +52,35 @@ public class GameFlowController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	  if (Input.GetKeyDown("space")) {
-      dungeonController.GenerateDungeon();
-      monsterController.GenMonsters();
+      ResetGameState();
     }
+
+    if (dungeonController.GameOver()) {
+      DisplayGameOver();
+
+    }
+
 	}
 
 #endregion
 #region Public Methods
 
+  public void ResetGameState() {
+      dungeonController.GenerateDungeon();
+      monsterController.GenMonsters();
+  }
+
   public void AdvanceState() {
     _controllers[_state].Toggle(false);
     _state = _nextState[_state];
     _controllers[_state].Toggle(true);
+  }
+  public void DisplayGameOver() {
+    gameOverPopup.ShowPopup(true);
+    //gameOverPopup.StartOver();
+    ResetGameState();
+    print("GAME OVER");
+
   }
 
 #endregion

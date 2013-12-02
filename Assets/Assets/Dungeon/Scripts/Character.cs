@@ -63,6 +63,10 @@ public class Character : MonoBehaviour {
 #endregion
 #region Public Methods
 
+  public bool IsDead() {
+    return (health <= 0);
+  }
+
   public void Move(Vector2 dir) {
     
       pos += dir;

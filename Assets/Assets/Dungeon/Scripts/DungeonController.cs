@@ -30,6 +30,7 @@ public class DungeonController : Controller {
       {KeyCode.RightArrow, new Vector2(+1,0)},
       {KeyCode.LeftArrow,  new Vector2(-1,0)}};
   private Vector2 pathtohere;
+  private bool gameOver = false; 
 
 #endregion
 #region Delegates and Events
@@ -77,6 +78,12 @@ public class DungeonController : Controller {
           plane.Highlight(_dungeon.GetVec2(i));
         }
       }
+			
+	  if (player.IsDead()) {
+        gameOver = true;
+        EndTurn();
+      }
+
     }
     plane.Revert();
 	}
@@ -94,6 +101,7 @@ public class DungeonController : Controller {
 
   public void GenerateDungeon() {
     plane.Init();
+	gameOver = false;
     _dungeon = new Dungeon(plane.width, plane.height);
     _dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
     _dungeon.Init();
@@ -109,6 +117,7 @@ public class DungeonController : Controller {
   
   public void EditorDungeon() {
     plane.Init();
+	gameOver = false;
     _dungeon = new Dungeon(plane.width, plane.height);
     _dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
     _dungeon.Init();
@@ -118,6 +127,10 @@ public class DungeonController : Controller {
     player.UpdateTransforms();
     // Clear old monsters.
     plane.BuildTexture(_dungeon);
+  }
+	
+  public bool GameOver(){
+    return gameOver;
   }
 
 #endregion
