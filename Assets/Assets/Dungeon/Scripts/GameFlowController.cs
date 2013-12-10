@@ -57,7 +57,9 @@ public class GameFlowController : MonoBehaviour {
 
     if (dungeonController.GameOver()) {
       DisplayGameOver();
-
+    }
+    else if (dungeonController.WinGame()) {
+      DisplayYouWin();
     }
 
 	}
@@ -75,12 +77,19 @@ public class GameFlowController : MonoBehaviour {
     _state = _nextState[_state];
     _controllers[_state].Toggle(true);
   }
+
   public void DisplayGameOver() {
     gameOverPopup.ShowPopup(true);
     //gameOverPopup.StartOver();
     ResetGameState();
     print("GAME OVER");
+  }
 
+  public void DisplayYouWin() {
+     gameOverPopup.ShowPopup(true);
+    //gameOverPopup.StartOver();
+    ResetGameState();
+    print("YOU WIN :D");
   }
 
 #endregion

@@ -56,6 +56,7 @@ public class Character : MonoBehaviour {
   public int attack   {get {return characterStats[Stat.Attack];}}
   public int armor    {get {return characterStats[Stat.Armor];}}
   public int magic    {get {return characterStats[Stat.Magic];}}
+  public float attack_range = 2f;
   public int GetStat(Stat s) {
     return characterStats[s];
   }
@@ -67,13 +68,25 @@ public class Character : MonoBehaviour {
     return (health <= 0);
   }
 
+  public bool EnemyInRange(Character c) {
+    return DistanceToCharacter(c) < attack_range;
+  }
+
+  public bool Attack(Character c) {
+    // Also check if player in sight (not through walls).
+    if (EnemyInRange(c)) {
+      c.DecrementStat(Stat.Health);
+      return true;
+    }
+    return false;
+  }
+
   public void Move(Vector2 dir) {
     
       pos += dir;
   }
   
   public void MoveTo(Vector2 dir) {
-
       pos = dir;
   }
 

@@ -38,17 +38,41 @@ public class MonsterController : Controller {
 	// Update is called once per frame
 	void Update () {
     if (turn == true) {
+      // Attack a monster in range if any
+      for (int i = 0; i < monsters.Count; i++) {
+        Monster m = (Monster) monsters[i];
+        if (player.EnemyInRange(m)) {
+          player.Attack(m);
+          break;
+        }
+      }
+
+      // Get rid of dead monsters.
+      for (int i = monsters.Count - 1; i >= 0; i--) {
+        Monster m = (Monster) monsters[i];
+        if (m.IsDead()){
+          monsters.Remove (m);
+          Destroy(m.gameObject);
+        }
+      }
+
+      // Move monsters and attack
       for (int i = 0; i < monsters.Count; i++) {
         Monster m = (Monster)monsters[i];
+
         // Monster move
         List<int> path = AStar.Pathfind(_dungeon, m.pos, player.pos);
         // Move along path.
         if (path.Count != 0) {
-          m.MoveTo(_dungeon.GetVec2(path[path.Count - 1]));
+          Vector2 newPos = _dungeon.GetVec2(path[path.Count - 1]);
+          Vector2 p_pos = player.pos;
+          // Prevents collision with player and exisiting monsters.
+          if (p_pos != newPos && !IsMonsterAt(newPos))
+            m.MoveTo(_dungeon.GetVec2(path[path.Count - 1]));
         }
-        // Check if I can attack
-        m.AttackPlayer(player);
+        m.Attack (player);
       }
+
       EndTurn();
     }
 	}
@@ -80,5 +104,20 @@ public class MonsterController : Controller {
       // m.UpdateTransforms();
       monsters.Add(m);
     }
+  }
+
+  public bool IsMonsterAt(Vector2 pos) {
+    for (int i = 0; i < monsters.Count; i++) {
+      Monster m = (Monster) monsters[i];
+      Vector2 mpos = m.pos;
+      if (mpos == pos) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public int MonstersLeft() {
+    return monsters.Count;
   }
 }

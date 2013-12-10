@@ -17,6 +17,8 @@ public class DungeonController : Controller {
   public Character player;
   public float move_rate = 0.01f;
 
+  public MonsterController mController;
+
 #endregion
 #region Private Variables
 
@@ -94,14 +96,16 @@ public class DungeonController : Controller {
 
   public void MovePlayer(Vector2 dir) {
     if (_dungeon.CanMove(player.pos + dir)) {
-      player.Move(dir);
-      offset += new Vector3(dir.x, 0, dir.y);
+      if (!mController.IsMonsterAt(player.pos + dir)) {
+        player.Move(dir);
+        offset += new Vector3(dir.x, 0, dir.y);
+      }
     }
   }
 
   public void GenerateDungeon() {
     plane.Init();
-	gameOver = false;
+	  gameOver = false;
     _dungeon = new Dungeon(plane.width, plane.height);
     _dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
     _dungeon.Init();
@@ -117,7 +121,7 @@ public class DungeonController : Controller {
   
   public void EditorDungeon() {
     plane.Init();
-	gameOver = false;
+	  gameOver = false;
     _dungeon = new Dungeon(plane.width, plane.height);
     _dungeon.SetStats(minRooms, maxRooms, minRoomSize, maxRoomSize, maxExtraTunnels);
     _dungeon.Init();
@@ -131,6 +135,10 @@ public class DungeonController : Controller {
 	
   public bool GameOver(){
     return gameOver;
+  }
+
+  public bool WinGame() {
+    return mController.MonstersLeft() == 0;
   }
 
 #endregion
