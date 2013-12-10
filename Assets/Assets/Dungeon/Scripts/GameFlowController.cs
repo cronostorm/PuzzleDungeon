@@ -14,6 +14,10 @@ public class GameFlowController : MonoBehaviour {
                            {State.Dungeon, State.AI}, 
                            {State.AI, State.Puzzle}};
   private Dictionary<State, Controller> _controllers;
+  private Dictionary<State, float> _camHeight = 
+    new Dictionary<State, float> {{State.Puzzle, 0.0f},
+                                  {State.Dungeon, 0.5f},
+                                  {State.AI, 0.5f}};
 #endregion
 #region Public Variables
 
@@ -22,6 +26,7 @@ public class GameFlowController : MonoBehaviour {
   public DungeonController dungeonController;
   public MonsterController monsterController;
   public GameOverPopup gameOverPopup;
+  public Camera highlightCam;
 
 #endregion
 #region Unity Methods
@@ -34,7 +39,6 @@ public class GameFlowController : MonoBehaviour {
        {State.Dungeon,  dungeonController}, 
        {State.AI,  monsterController}};
     _controllers[_state].Toggle(true);
-
   }
 
   void OnEnable() {
@@ -75,21 +79,23 @@ public class GameFlowController : MonoBehaviour {
   public void AdvanceState() {
     _controllers[_state].Toggle(false);
     _state = _nextState[_state];
+    highlightCam.rect = new Rect(0, _camHeight[_state], 1, 0.5f);
     _controllers[_state].Toggle(true);
   }
 
   public void DisplayGameOver() {
+    monsterController.ResetLevel();
     gameOverPopup.ShowPopup(true);
     //gameOverPopup.StartOver();
-    ResetGameState();
     print("GAME OVER");
   }
 
   public void DisplayYouWin() {
-     gameOverPopup.ShowPopup(true);
+    gameOverPopup.ShowPopup(true);
     //gameOverPopup.StartOver();
     ResetGameState();
     print("YOU WIN :D");
+    monsterController.LevelUp();
   }
 
 #endregion

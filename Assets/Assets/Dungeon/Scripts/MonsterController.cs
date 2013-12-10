@@ -10,12 +10,12 @@ public class MonsterController : Controller {
   public Character player;
   public int minMonsters;
   public int maxMonsters;
-  public int maxMonsterLevel;
-  public int minMonsterLevel;
   public DungeonController dungeonController;
 
   private Dungeon _dungeon;
   private ArrayList monsters = new ArrayList();
+  private int minMonsterLevel = 1;
+  private int maxMonsterLevel = 2;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +43,7 @@ public class MonsterController : Controller {
         Monster m = (Monster) monsters[i];
         if (player.EnemyInRange(m)) {
           player.Attack(m);
+          m.Attack(player);
           break;
         }
       }
@@ -81,6 +82,16 @@ public class MonsterController : Controller {
     foreach (Monster m in monsters) {
       Destroy(m.gameObject);
     }
+  }
+
+  public void LevelUp() {
+    minMonsterLevel += 1;
+    maxMonsterLevel += Random.Range(1,5);
+  }
+
+  public void ResetLevel() {
+    minMonsterLevel = 1;
+    maxMonsterLevel = 2;
   }
 
   public void GenMonsters() {
